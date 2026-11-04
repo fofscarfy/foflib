@@ -284,7 +284,7 @@ static Action _ManageCustomDamage(int victim, int &attacker, int &inflictor, flo
     Action endAction;
 
     Call_StartForward(g_cm.fwd);
-    Call_PushArray(ev, sizeof(ev));
+    Call_PushArrayEx(ev, sizeof(ev), SM_PARAM_COPYBACK);
     int error = Call_Finish(endAction);
 
     if (error != SP_ERROR_NONE)
