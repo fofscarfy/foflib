@@ -534,16 +534,21 @@ static Action _Hook_OnScoreMessage(UserMsg msg_id, BfRead msg, const int[] playe
         ev.players[i] = players[i];
     }
 
+    LogMessage("In OnScoreMessage! g_dontTrack=%d, flag & g_passthrough=%d", g_dontTrack, flag & g_passthrough);
+
     if (!g_dontTrack) g_events[ev.eventType] = ev;
 
     // Standard score update, no notification
     if (flag & g_passthrough || g_dontTrack)
     {
         // The language tokens that start with "Cash_" give money instead of points
-        if (strncmp(ev.text, "Cash_", 5)) return Plugin_Continue;
+        if (strncmp(ev.text, "Cash_", 5) == 0) return Plugin_Continue;
+
+        LogMessage("Entering passthrough function!");
 
         for (int i = 0; i < playersNum; i++)
         {
+            LogMessage("Adding score %d to player %d", ev.score, players[i]);
             g_scores[players[i]] += ev.score;
             if (ev.eventType == FOFLIB_NOTOMSG_KSKILL) g_scores[players[i]] += ev.bonus;
 
